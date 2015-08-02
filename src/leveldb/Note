@@ -1,0 +1,1 @@
+ make libleveldb.a libmemenv.a
