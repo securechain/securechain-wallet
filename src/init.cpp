@@ -968,7 +968,7 @@ bool AppInit2(boost::thread_group& threadGroup)
             InitWarning(msg);
         }
         else if (nLoadWalletRet == DB_TOO_NEW)
-            strErrors << _("Error loading wallet.dat: Wallet requires newer version of Securecoin") << "\n";
+            strErrors << _("Error loading wallet.dat: Wallet requires newer version of Securechain Wallet") << "\n";
         else if (nLoadWalletRet == DB_NEED_REWRITE)
         {
             strErrors << _("Wallet needed to be rewritten: restart Securechain Wallet to complete") << "\n";

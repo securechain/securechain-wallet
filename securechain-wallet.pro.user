@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.4.2, 2015-08-08T01:18:52. -->
+<!-- Written by QtCreator 3.4.2, 2015-08-08T17:49:25. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -318,7 +318,7 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">QtProjectManager.QMakeBuildStep</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibrary">false</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibraryAuto">true</value>
-      <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments">&quot;USE_IPV6=-&quot; &quot;RELEASE=1&quot; &quot;USE_UPNP=-&quot;</value>
+      <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments">&quot;USE_IPV6=-&quot; &quot;RELEASE=1&quot;</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">false</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.SeparateDebugInfo">false</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.UseQtQuickCompiler">false</value>
