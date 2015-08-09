@@ -15,7 +15,7 @@ sphlib 3.0 by Thomas Pornin.
 
 Intro
 ---------------------
-Securechain wallet is an update to the official Securecoin core wallet with critical fixs to potential security problems.
+Securechain wallet is an update to the official Securecoin core wallet with critical fixes to potential security problems.
 Securecoin is a free open source peer-to-peer electronic cash system that is
 completely decentralized, without the need for a central server or trusted
 parties.  Users hold the crypto keys to their own money and transact directly
