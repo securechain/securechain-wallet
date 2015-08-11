@@ -29,6 +29,13 @@ You need the Qt5 run-time and probably boost libraries to run Securechain Wallet
 
 This initial release supports only Windows and Linux compilation. The MAC compatible codes will be released later.
 
+
+Developers
+---------------------
+The main developer of SecureCoin core wallet is baritus.
+The main developer of Securechain Wallet is Haimin Zhang(contact@securechain.info).
+
+
 Other Pages
 ---------------------
 - [Unix Build Notes](build-unix.md)
