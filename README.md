@@ -33,6 +33,7 @@ This initial release supports only Windows and Linux compilation. The MAC compat
 Developers
 ---------------------
 The main developer of SecureCoin core wallet is baritus.
+
 The main developer of Securechain Wallet is Haimin Zhang(contact@securechain.info).
 
 
