@@ -21,13 +21,13 @@ BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
             VALUE "CompanyName",        "Securechain"
-            VALUE "FileDescription",    "Securechain-Wallet (OSS GUI client for Securecoin)"
+            VALUE "FileDescription",    "Securechain Wallet (OSS GUI client for Securecoin)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
             VALUE "InternalName",       "securechain-wallet"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
             VALUE "OriginalFilename",   "securechain-wallet.exe"
-            VALUE "ProductName",        "Securechain-Wallet"
+            VALUE "ProductName",        "Securechain Wallet"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

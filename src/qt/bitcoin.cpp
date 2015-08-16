@@ -153,9 +153,9 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName("Securechain");
     QApplication::setOrganizationDomain("securechain.info");
     if(GetBoolArg("-testnet")) // Separate UI settings for testnet
-        QApplication::setApplicationName("Securechain-Wallet-testnet");
+        QApplication::setApplicationName("Securechain Wallet-testnet");
     else
-        QApplication::setApplicationName("Securechain-Wallet");
+        QApplication::setApplicationName("Securechain Wallet");
 
     // ... then GUI settings:
     OptionsModel optionsModel;
@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
                 window.removeAllWallets();
                 guiref = 0;
             }
-            // Shutdown the core and its threads, but don't exit Securechain-Wallet here
+            // Shutdown the core and its threads, but don't exit Securechain Wallet here
             threadGroup.interrupt_all();
             threadGroup.join_all();
             Shutdown();

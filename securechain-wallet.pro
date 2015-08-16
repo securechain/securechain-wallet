@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = securechain-wallet
-macx:TARGET = "Securechain-Wallet"
+macx:TARGET = "Securechain Wallet"
 VERSION = 0.9.0
 INCLUDEPATH += src src/json src/qt
 QT += network widgets
@@ -19,17 +19,14 @@ CONFIG += static
 #    BOOST_INCLUDE_PATH, BOOST_LIB_PATH, BDB_INCLUDE_PATH,
 #    BDB_LIB_PATH, OPENSSL_INCLUDE_PATH and OPENSSL_LIB_PATH respectively
 
-BOOST_INCLUDE_PATH = D:\deps\boost_1_58_0
-BOOST_LIB_PATH = D:\deps\boost_1_58_0\stage\lib
-BDB_INCLUDE_PATH = D:\deps\db-4.8.30.NC\build_unix
-BDB_LIB_PATH = D:\deps\db-4.8.30.NC\build_unix
-OPENSSL_INCLUDE_PATH = D:\deps\openssl-1.0.2d\include
-OPENSSL_LIB_PATH = D:\deps\openssl-1.0.2d
-QRENCODE_INCLUDE_PATH = D:\deps\qrencode-3.4.4
-QRENCODE_LIB_PATH = D:\deps\qrencode-3.4.4\.libs
-MINIUPNPC_INCLUDE_PATH = D:\deps
-MINIUPNPC_LIB_PATH =D:\deps\miniupnpc
-
+macx {
+OPENSSL_INCLUDE_PATH = /usr/local/opt/openssl/include
+OPENSSL_LIB_PATH = /usr/local/opt/openssl/lib
+QRENCODE_INCLUDE_PATH = /usr/local/include
+QRENCODE_LIB_PATH = /usr/local/lib
+MINIUPNPC_INCLUDE_PATH = /usr/local/opt/miniupnpc/include
+MINIUPNPC_LIB_PATH = /usr/local/opt/miniupnpc/lib
+}
 
 OBJECTS_DIR = build
 MOC_DIR = build
@@ -37,10 +34,10 @@ UI_DIR = build
 
 # use: qmake "RELEASE=1"
 contains(RELEASE, 1) {
-    # Mac: compile for maximum compatibility (10.5, 32-bit)
-    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.5 -arch i386 -isysroot /Developer/SDKs/MacOSX10.5.sdk
-    macx:QMAKE_CFLAGS += -mmacosx-version-min=10.5 -arch i386 -isysroot /Developer/SDKs/MacOSX10.5.sdk
-    macx:QMAKE_OBJECTIVE_CFLAGS += -mmacosx-version-min=10.5 -arch i386 -isysroot /Developer/SDKs/MacOSX10.5.sdk
+    # Mac: compile for maximum compatibility (10.7, 64-bit)
+    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.10.sdk
+    macx:QMAKE_CFLAGS += -mmacosx-version-min=10.7 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.10.sdk
+    macx:QMAKE_OBJECTIVE_CFLAGS += -mmacosx-version-min=10.7 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.10.sdk
 
     !win32:!macx {
         # Linux: static link and extra security (see: https://wiki.debian.org/Hardening)
@@ -234,7 +231,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/sph_jh.h \
     src/sph_groestl.h \
     src/sph_bmw.h \
-    src/sph_types.h
+    src/sph_types.h \
+    src/qt/macnotificationhandler.h
 
 SOURCES += src/qt/bitcoin.cpp \
     src/qt/bitcoingui.cpp \
@@ -374,7 +372,7 @@ OTHER_FILES += README.md \
 
 # platform specific defaults, if not overridden on command line
 isEmpty(BOOST_LIB_SUFFIX) {
-    macx:BOOST_LIB_SUFFIX = -mt
+    macx:BOOST_LIB_SUFFIX = -mt-s
     win32:BOOST_LIB_SUFFIX = -mgw49-mt-s-1_58
 }
 
@@ -383,7 +381,7 @@ isEmpty(BOOST_THREAD_LIB_SUFFIX) {
 }
 
 isEmpty(BDB_LIB_PATH) {
-    macx:BDB_LIB_PATH = /opt/local/lib/db48
+    macx:BDB_LIB_PATH = /usr/local/opt/berkeley-db4/lib
 }
 
 isEmpty(BDB_LIB_SUFFIX) {
@@ -391,15 +389,15 @@ isEmpty(BDB_LIB_SUFFIX) {
 }
 
 isEmpty(BDB_INCLUDE_PATH) {
-    macx:BDB_INCLUDE_PATH = /opt/local/include/db48
+    macx:BDB_INCLUDE_PATH = /usr/local/opt/berkeley-db4/include
 }
 
 isEmpty(BOOST_LIB_PATH) {
-    macx:BOOST_LIB_PATH = /opt/local/lib
+    macx:BOOST_LIB_PATH = /usr/local/opt/boost/lib
 }
 
 isEmpty(BOOST_INCLUDE_PATH) {
-    macx:BOOST_INCLUDE_PATH = /opt/local/include
+    macx:BOOST_INCLUDE_PATH = /usr/local/opt/boost/include
 }
 
 win32:DEFINES += WIN32
@@ -451,3 +449,6 @@ contains(RELEASE, 1) {
 }
 
 system($$QMAKE_LRELEASE -silent $$TRANSLATIONS)
+
+OBJECTIVE_SOURCES += \
+    src/qt/macnotificationhandler.mm

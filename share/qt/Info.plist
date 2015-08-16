@@ -15,9 +15,9 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
-	<string>Bitcoin-Qt</string>
+        <string>Securechain Wallet</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.bitcoinfoundation.Bitcoin-Qt</string>
+        <string>info.securechain.Securechain-Wallet</string>
         <key>CFBundleURLTypes</key>
         <array>
           <dict>
