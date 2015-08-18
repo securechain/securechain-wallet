@@ -77,7 +77,7 @@ QMenu *MacDockIconHandler::dockMenu()
 void MacDockIconHandler::setIcon(const QIcon &icon)
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSImage *image;
+    NSImage *image = NULL;
     if (icon.isNull())
         image = [[NSImage imageNamed:@"NSApplicationIcon"] retain];
     else {
