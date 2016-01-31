@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = securechain-wallet
 macx:TARGET = "Securechain-Wallet"
-VERSION = 0.9.0
+VERSION = 0.9.1
 INCLUDEPATH += src src/json src/qt
 QT += network widgets
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
@@ -19,12 +19,12 @@ CONFIG += static
 #    BOOST_INCLUDE_PATH, BOOST_LIB_PATH, BDB_INCLUDE_PATH,
 #    BDB_LIB_PATH, OPENSSL_INCLUDE_PATH and OPENSSL_LIB_PATH respectively
 
-BOOST_INCLUDE_PATH = D:\deps\boost_1_58_0
-BOOST_LIB_PATH = D:\deps\boost_1_58_0\stage\lib
+BOOST_INCLUDE_PATH = D:\deps\boost_1_60_0
+BOOST_LIB_PATH = D:\deps\boost_1_60_0\stage\lib
 BDB_INCLUDE_PATH = D:\deps\db-4.8.30.NC\build_unix
 BDB_LIB_PATH = D:\deps\db-4.8.30.NC\build_unix
-OPENSSL_INCLUDE_PATH = D:\deps\openssl-1.0.2d\include
-OPENSSL_LIB_PATH = D:\deps\openssl-1.0.2d
+OPENSSL_INCLUDE_PATH = D:\deps\openssl-1.0.2f\include
+OPENSSL_LIB_PATH = D:\deps\openssl-1.0.2f
 QRENCODE_INCLUDE_PATH = D:\deps\qrencode-3.4.4
 QRENCODE_LIB_PATH = D:\deps\qrencode-3.4.4\.libs
 MINIUPNPC_INCLUDE_PATH = D:\deps
@@ -375,7 +375,7 @@ OTHER_FILES += README.md \
 # platform specific defaults, if not overridden on command line
 isEmpty(BOOST_LIB_SUFFIX) {
     macx:BOOST_LIB_SUFFIX = -mt
-    win32:BOOST_LIB_SUFFIX = -mgw49-mt-s-1_58
+    win32:BOOST_LIB_SUFFIX = -mgw49-mt-s-1_60
 }
 
 isEmpty(BOOST_THREAD_LIB_SUFFIX) {
