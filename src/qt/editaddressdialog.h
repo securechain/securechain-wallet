@@ -26,6 +26,8 @@ public:
         EditSendingAddress
     };
 
+    static const int MAX_NEW_ADDRESS_NUM = 1000;
+
     explicit EditAddressDialog(Mode mode, QWidget *parent = 0);
     ~EditAddressDialog();
 
