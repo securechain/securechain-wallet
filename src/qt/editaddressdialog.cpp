@@ -15,11 +15,15 @@ EditAddressDialog::EditAddressDialog(Mode mode, QWidget *parent) :
 
     GUIUtil::setupAddressWidget(ui->addressEdit, this);
 
+    ui->labelAddressNum->setVisible(false);
+    ui->comboAddressNum->setVisible(false);
     switch(mode)
     {
     case NewReceivingAddress:
         setWindowTitle(tr("New receiving address"));
         ui->addressEdit->setEnabled(false);
+        ui->labelAddressNum->setVisible(true);
+        ui->comboAddressNum->setVisible(true);
         break;
     case NewSendingAddress:
         setWindowTitle(tr("New sending address"));
@@ -60,27 +64,51 @@ void EditAddressDialog::loadRow(int row)
 
 bool EditAddressDialog::saveCurrentRow()
 {
+    bool flag;
+    int num;
+
     if(!model)
         return false;
 
+    num = 1;
+    flag = false;
     switch(mode)
     {
     case NewReceivingAddress:
+        num = ui->comboAddressNum->currentText().toInt();
     case NewSendingAddress:
-        address = model->addRow(
-                mode == NewSendingAddress ? AddressTableModel::Send : AddressTableModel::Receive,
-                ui->labelEdit->text(),
-                ui->addressEdit->text());
+        if (num <= 0 || num > MAX_NEW_ADDRESS_NUM)
+        {
+            address.clear();
+            QMessageBox::critical(this, "Error", "Invalid number of new addresses.", QMessageBox::Ok,
+                                  QMessageBox::Ok);
+            break;
+        }
+
+        flag = true;
+        for(;num > 0; num--)
+        {
+            address = model->addRow(
+                    mode == NewSendingAddress ? AddressTableModel::Send : AddressTableModel::Receive,
+                    ui->labelEdit->text(),
+                    ui->addressEdit->text());
+            if (address.isEmpty())
+            {
+                flag = false;
+                break;
+            }
+        }
         break;
     case EditReceivingAddress:
     case EditSendingAddress:
         if(mapper->submit())
         {
             address = ui->addressEdit->text();
+            flag = (address.isEmpty() ? false : true);
         }
         break;
     }
-    return !address.isEmpty();
+    return flag;
 }
 
 void EditAddressDialog::accept()
