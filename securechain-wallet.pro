@@ -19,6 +19,7 @@ CONFIG += static
 #    BOOST_INCLUDE_PATH, BOOST_LIB_PATH, BDB_INCLUDE_PATH,
 #    BDB_LIB_PATH, OPENSSL_INCLUDE_PATH and OPENSSL_LIB_PATH respectively
 
+win32 {
 BOOST_INCLUDE_PATH = D:\deps\boost_1_60_0
 BOOST_LIB_PATH = D:\deps\boost_1_60_0\stage\lib
 BDB_INCLUDE_PATH = D:\deps\db-4.8.30.NC\build_unix
@@ -29,6 +30,7 @@ QRENCODE_INCLUDE_PATH = D:\deps\qrencode-3.4.4
 QRENCODE_LIB_PATH = D:\deps\qrencode-3.4.4\.libs
 MINIUPNPC_INCLUDE_PATH = D:\deps
 MINIUPNPC_LIB_PATH =D:\deps\miniupnpc
+}
 
 macx {
 OPENSSL_INCLUDE_PATH = /usr/local/opt/openssl/include
