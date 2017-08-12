@@ -1196,7 +1196,9 @@ static const char *strMainNetDNSSeed[][2] = {
     {"src1.dnsseed.securechain.info", "src1.dnsseed.securechain.info"},
     {"src2.dnsseed.securechain.info", "src2.dnsseed.securechain.info"},
     {"src3.dnsseed.securechain.info", "src3.dnsseed.securechain.info"},
-    {"src4.dnsseed.securechain.info", "src4.dnsseed.securechain.info"},
+    {"src1.dnsseed.securechain.net", "src1.dnsseed.securechain.net"},
+    {"src2.dnsseed.securechain.net", "src2.dnsseed.securechain.net"},
+    {"src3.dnsseed.securechain.net", "src3.dnsseed.securechain.net"},
     {NULL, NULL}
 };
 
