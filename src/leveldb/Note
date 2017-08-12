@@ -1,1 +1,5 @@
- make libleveldb.a libmemenv.a
+To Linux/Mac:
+make libleveldb.a libmemenv.a
+
+To Windows by mxe:
+TARGET_OS=NATIVE_WINDOWS make libleveldb.a libmemenv.a CC=/home/securechain/Workspace/mxe/usr/bin/i686-w64-mingw32.static-gcc CXX=/home/securechain/Workspace/mxe/usr/bin/i686-w64-mingw32.static-g++
