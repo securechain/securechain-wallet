@@ -1,5 +1,5 @@
-To Linux/Mac:
+To build Linux or Mac version on local machine:
 make libleveldb.a libmemenv.a
 
-To Windows by MEX on Linux:
+To cross build Windows version by MXE on Linux/Mac machine:
 TARGET_OS=NATIVE_WINDOWS make libleveldb.a libmemenv.a CC=/home/securechain/Workspace/mxe/usr/bin/i686-w64-mingw32.static-gcc CXX=/home/securechain/Workspace/mxe/usr/bin/i686-w64-mingw32.static-g++

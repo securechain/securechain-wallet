@@ -1,0 +1,9 @@
+
+.DS_Store
+securechain-wallet.pro.user
+securechain-wallet.pro.user.85dc513
+securechain-wallet.pro.user
+*.o
+*.P
+src/securecoind
+src/obj/build.h

@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = securechain-wallet
-macx:TARGET = "Securechain-Wallet"
-VERSION = 0.9.1
+macx:TARGET = "Securechain Wallet"
+VERSION = 0.9.2
 INCLUDEPATH += src src/json src/qt
 QT += network widgets
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
@@ -9,7 +9,7 @@ CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
 
-# for boost 1.38, add -mt to the boost libraries
+# for boost 1.60 on Mac, no need to add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
 # for boost thread win32 with _win32 sufix
 # use: BOOST_THREAD_LIB_SUFFIX=_win32-...
@@ -33,12 +33,12 @@ MINIUPNPC_LIB_PATH =D:\deps\miniupnpc
 }
 
 macx {
-OPENSSL_INCLUDE_PATH = /usr/local/opt/openssl/include
-OPENSSL_LIB_PATH = /usr/local/opt/openssl/lib
-QRENCODE_INCLUDE_PATH = /usr/local/include
-QRENCODE_LIB_PATH = /usr/local/lib
-MINIUPNPC_INCLUDE_PATH = /usr/local/opt/miniupnpc/include
-MINIUPNPC_LIB_PATH = /usr/local/opt/miniupnpc/lib
+OPENSSL_INCLUDE_PATH = /opt/local/include/openssl
+OPENSSL_LIB_PATH = /opt/local/lib
+QRENCODE_INCLUDE_PATH = /opt/local/include
+QRENCODE_LIB_PATH = /opt/local/lib
+MINIUPNPC_INCLUDE_PATH = /opt/local/include
+MINIUPNPC_LIB_PATH = /opt/local/lib
 }
 
 OBJECTS_DIR = build
@@ -47,10 +47,10 @@ UI_DIR = build
 
 # use: qmake "RELEASE=1"
 contains(RELEASE, 1) {
-    # Mac: compile for maximum compatibility (10.7, 64-bit)
-    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.10.sdk
-    macx:QMAKE_CFLAGS += -mmacosx-version-min=10.7 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.10.sdk
-    macx:QMAKE_OBJECTIVE_CFLAGS += -mmacosx-version-min=10.7 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.10.sdk
+    # Mac: compile for maximum compatibility (10.10, 64-bit)
+    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.10 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk
+    macx:QMAKE_CFLAGS += -mmacosx-version-min=10.10 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk
+    macx:QMAKE_OBJECTIVE_CFLAGS += -mmacosx-version-min=10.10 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk
 
     !win32:!macx {
         # Linux: static link and extra security (see: https://wiki.debian.org/Hardening)
@@ -79,7 +79,8 @@ win32:QMAKE_LFLAGS *= -static -static-libgcc
 contains(USE_QRCODE, 1) {
     message(Building with QRCode support)
     DEFINES += USE_QRCODE
-    LIBS += -lqrencode
+    macx:LIBS += $$QRENCODE_LIB_PATH/libqrencode.a
+    !macx:LIBS += -lqrencode
 }
 
 # use: qmake "USE_UPNP=1" ( enabled by default; default)
@@ -95,7 +96,8 @@ contains(USE_UPNP, -) {
     }
     DEFINES += USE_UPNP=$$USE_UPNP STATICLIB MINIUPNP_STATICLIB
     INCLUDEPATH += $$MINIUPNPC_INCLUDE_PATH
-    LIBS += $$join(MINIUPNPC_LIB_PATH,,-L,) -lminiupnpc
+    macx:LIBS += $$MINIUPNPC_LIB_PATH/libminiupnpc.a
+    !macx:LIBS += $$join(MINIUPNPC_LIB_PATH,,-L,) -lminiupnpc
     win32:LIBS += -liphlpapi
 }
 
@@ -127,7 +129,7 @@ INCLUDEPATH += src/leveldb/include src/leveldb/helpers
 LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
 !win32 {
     # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
-    # genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
+    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
 } else {
     # make an educated guess about what the ranlib command is called
     isEmpty(QMAKE_RANLIB) {
@@ -385,7 +387,7 @@ OTHER_FILES += README.md \
 
 # platform specific defaults, if not overridden on command line
 isEmpty(BOOST_LIB_SUFFIX) {
-    macx:BOOST_LIB_SUFFIX = -mt
+    macx:BOOST_LIB_SUFFIX =
     win32:BOOST_LIB_SUFFIX = -mgw49-mt-s-1_60
 }
 
@@ -394,7 +396,7 @@ isEmpty(BOOST_THREAD_LIB_SUFFIX) {
 }
 
 isEmpty(BDB_LIB_PATH) {
-    macx:BDB_LIB_PATH = /usr/local/opt/berkeley-db4/lib
+    macx:BDB_LIB_PATH = /opt/local/lib/db48
 }
 
 isEmpty(BDB_LIB_SUFFIX) {
@@ -402,15 +404,15 @@ isEmpty(BDB_LIB_SUFFIX) {
 }
 
 isEmpty(BDB_INCLUDE_PATH) {
-    macx:BDB_INCLUDE_PATH = /usr/local/opt/berkeley-db4/include
+    macx:BDB_INCLUDE_PATH = /opt/local/include/db48
 }
 
 isEmpty(BOOST_LIB_PATH) {
-    macx:BOOST_LIB_PATH = /usr/local/opt/boost/lib
+    macx:BOOST_LIB_PATH = /opt/local/lib
 }
 
 isEmpty(BOOST_INCLUDE_PATH) {
-    macx:BOOST_INCLUDE_PATH = /usr/local/opt/boost/include
+    macx:BOOST_INCLUDE_PATH = /opt/local/include/boost
 }
 
 win32:DEFINES += WIN32
@@ -447,12 +449,17 @@ macx:QMAKE_INFO_PLIST = share/qt/Info.plist
 # Set libraries and includes at end, to use platform-defined defaults if not overridden
 INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$OPENSSL_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH
 LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
-LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
+macx: LIBS += $$OPENSSL_LIB_PATH/libssl.a $$OPENSSL_LIB_PATH/libcrypto.a $$BDB_LIB_PATH/libdb_cxx$$(BDB_LIB_SUFFIX).a
+!macx:LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
 # -lgdi32 has to happen after -lcrypto (see  #681)
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
-LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
+macx: LIBS += $$BOOST_LIB_PATH/libboost_system$$(BOOST_LIB_SUFFIX).a
+macx: LIBS += $$BOOST_LIB_PATH/libboost_filesystem$$(BOOST_LIB_SUFFIX).a
+macx: LIBS += $$BOOST_LIB_PATH/libboost_program_options$$(BOOST_LIB_SUFFIX).a
+macx: LIBS += $$BOOST_LIB_PATH/libboost_thread$$(BOOST_LIB_SUFFIX).a
+!macx:LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
 win32:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
-macx:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
+macx:LIBS += $$BOOST_LIB_PATH/libboost_chrono$$(BOOST_LIB_SUFFIX).a
 
 contains(RELEASE, 1) {
     !win32:!macx {
