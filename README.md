@@ -29,6 +29,70 @@ You need the Qt5 run-time and probably boost libraries to run Securechain Wallet
 This release supports all Windows, Mac and Linux compilation.
 
 
+Build
+---------------------
+The recommended versions of dependencies:
+boost: 1.60
+openssl: 1.0.2
+miniupnpc: 1.9.20150522 or earlier 1.9 version
+Berkeley DB: 4.8.30NC
+
+
+Securechain Wallet GUI
+
+Windows(static):
+To build a Windows version, it is recommended to setup a MXE environment(http://mxe.cc/) under Ubuntu Linux 16.04. Try the steps below with reference to "https://bitcointalk.org/index.php?topic=1080289.0":
+1. Open a terminal and install all dependency libraries with root privilege as below (http://mxe.cc/#requirements-debian):
+  sudo apt-get install \
+    autoconf automake autopoint bash bison bzip2 flex gettext\
+    git g++ gperf intltool libffi-dev libgdk-pixbuf2.0-dev \
+    libtool-bin libltdl-dev libssl-dev libxml-parser-perl make \
+    openssl p7zip-full patch perl pkg-config python ruby scons \
+    sed unzip wget xz-utils g++-multilib libc6-dev-i386
+2. Download the latest version of MXE as below(http://mxe.cc/#download):
+git clone https://github.com/mxe/mxe.git
+3. Make static boost, qttools and miniupnpc compilation by MXE as below:
+    make MXE_TARGETS="i686-w64-mingw32.static" boost
+    make MXE_TARGETS="i686-w64-mingw32.static" qttools
+    make MXE_TARGETS="i686-w64-mingw32.static" miniupnpc
+Note that the current version of miniupnpc from MXE is fine for Securechain-Wallet, so that there is no need to perform manual compilation.
+4. Download Berkeley DB 4.8.30NC from http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz and extract to db-4.8.30.NC folder.
+5. Copy securechain-wallet/compile-db.sh file to the db-4.8.30.NC folder and update the "MXE_PATH" environment variable.
+6. Open a terminal and go to the same folder, then run the following command to perform static cross compilation by MXE:
+    ./compile-db.sh
+6. Go to securechain-wallet folder, open "compile-src.sh" and update the "MXE_PATH" environment variable.
+7. In the same terminal go to the securechain-wallet folder, then run the following command:
+    ./comiple-src.sh
+8. When the build is finished, there will be a new "securechain-wallet.exe" file under the "release" folder. The new file can run on Windows.
+
+Linux(non-static):
+It is recommended to build a Linux version under Ubuntu 16.04. Try the steps below:
+1. Install all dependencies including boost, qttools, miniupnpc and openssl by apt tool.
+2. Install Berkeley DB by manual make.
+3. Start Qt Creater and open "securechain-wallet.pro", then perform proper configurations. Be sure that it is a release build.
+4. Click the "Build"/"Build All" menu option to start the build.
+5. When the build is finished, there will be a new "securechain-wallet" file under the "build-securechain-wallet-Desktop-Release" folder. The new file can run on the same Linux platform.
+
+Mac(static):
+The build steps for Mac are similar to Linux. Note that due to the new System Integrity Protection feature from EI Capitan, the /usr and/or /usr/local folders may be readonly even with root privilege(https://support.apple.com/en-us/HT204899). Therefore it is recommended to install the depencencies into /opt/local. Some libraries can also be installed automatically be MacPort(https://www.macports.org/).
+Note that the build for Mac will be static, therefore the dependencies should also be static including Qt. To make a static build of Qt libraries, please refer to http://doc.qt.io/qt-5/osx-deployment.html
+
+
+SecureCoin Daemon(Not fully tested)
+
+Linux:
+It is recommended to build a Linux version under Ubuntu 16.04. Try the steps below:
+1. Install the same dependencies as to Securechain Wallet GUI.
+2. Open a terminal and go to "securechain-wallet/src", then run the following command:
+    make -f makefile.unix
+3. When the build is finished, there will be a new "securecoind" file under the same folder. The new file can run on the same Linux platform.
+
+Mac:
+The build steps for Mac are similar to Linux. The only change is the make command as below:
+    make -f makefile.osx
+For more information please refer to the Mac section for Securechain Wallet GUI.
+
+
 Developers
 ---------------------
 The main developer of SecureCoin core wallet is baritus.
