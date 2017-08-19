@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2013 Securecoin developers
-// Copyright (c) 2015 Securechain developers
+// Copyright (c) 2015-2017 Securechain developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -1193,10 +1193,12 @@ void MapPort(bool)
 // The first name is used as information source for addrman.
 // The second name should resolve to a list of seed addresses.
 static const char *strMainNetDNSSeed[][2] = {
-    {"src1.seed.nodes.mywl.lt", "src1.seed.nodes.mywl.lt"},
-    {"src2.seed.nodes.mywl.lt", "src2.seed.nodes.mywl.lt"},
-	{"src3.seed.nodes.mywl.lt", "src3.seed.nodes.mywl.lt"},
-	{"src4.seed.nodes.mywl.lt", "src4.seed.nodes.mywl.lt"},
+    {"src1.dnsseed.securechain.info", "src1.dnsseed.securechain.info"},
+    {"src2.dnsseed.securechain.info", "src2.dnsseed.securechain.info"},
+    {"src3.dnsseed.securechain.info", "src3.dnsseed.securechain.info"},
+    {"src1.dnsseed.securechain.net", "src1.dnsseed.securechain.net"},
+    {"src2.dnsseed.securechain.net", "src2.dnsseed.securechain.net"},
+    {"src3.dnsseed.securechain.net", "src3.dnsseed.securechain.net"},
     {NULL, NULL}
 };
 
@@ -1649,7 +1651,7 @@ bool BindListenPort(const CService &addrBind, string& strError)
     // and enable it by default or not. Try to enable it, if possible.
     if (addrBind.IsIPv6()) {
 #ifdef IPV6_V6ONLY
-        setsockopt(hListenSocket, IPPROTO_IPV6, IPV6_V6ONLY, (void*)&nOne, sizeof(int));
+        setsockopt(hListenSocket, IPPROTO_IPV6, IPV6_V6ONLY, (const char*)&nOne, sizeof(int));
 #endif
 #ifdef WIN32
         int nProtLevel = 10 /* PROTECTION_LEVEL_UNRESTRICTED */;
