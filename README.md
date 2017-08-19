@@ -77,7 +77,7 @@ make MXE_TARGETS="i686-w64-mingw32.static" qttools
 make MXE_TARGETS="i686-w64-mingw32.static" miniupnpc
 ```
 
-Note that the current version of miniupnpc from MXE is working for Securechain Wallet, so that there is no need to perform manual compilation.
+Note that the current version of miniupnpc from MXE works fine for Securechain Wallet, so that there is no need to perform manual compilation.
 
 4. Download Berkeley DB 4.8.30NC from http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz and extract to db-4.8.30.NC folder.
 
