@@ -48,9 +48,9 @@ git clone https://github.com/securechain/securechain-wallet.git
 
 ### Securechain Wallet GUI
 
-**Windows(static)**
+**Windows (static)**
 
-To build a Windows version, it is recommended to setup a MXE environment(http://mxe.cc/) under Ubuntu Linux 16.04. Try the steps below with reference to "https://bitcointalk.org/index.php?topic=1080289.0":
+To build a Windows version, it is recommended to setup a [MXE](http://mxe.cc/) environment under Ubuntu Linux 16.04. Try the steps below with reference to "https://bitcointalk.org/index.php?topic=1080289.0":
 
 1. Open a terminal and install all dependency libraries with root privilege as below (http://mxe.cc/#requirements-debian):
 
@@ -63,7 +63,7 @@ openssl p7zip-full patch perl pkg-config python ruby scons \
 sed unzip wget xz-utils g++-multilib libc6-dev-i386
 ```
 
-2. Download the latest version of MXE as below(http://mxe.cc/#download):
+2. Download the latest version of MXE as below (http://mxe.cc/#download):
 
 ```
 git clone https://github.com/mxe/mxe.git
@@ -83,7 +83,7 @@ Note that the current version of miniupnpc from MXE is working for Securechain W
 
 5. Copy "securechain-wallet/compile-db.sh" file to the db-4.8.30.NC folder and update the "MXE_PATH" environment variable in the file.
 
-6. Open a terminal and go to the same folder, then run the following command to perform static cross compilation by MXE:
+6. Open a terminal and go to the same folder, and then run the following command to perform static cross compilation by MXE:
 
 ```
 ./compile-db.sh
@@ -100,7 +100,7 @@ Note that the current version of miniupnpc from MXE is working for Securechain W
 8. When the build is finished, there will be a new "securechain-wallet.exe" file under the "release" folder. The new file can run on Windows.
 
 
-**Linux(non-static)**
+**Linux (non-static)**
 
 It is recommended to build a Linux version under Ubuntu 16.04. Try the steps below:
 
@@ -108,23 +108,23 @@ It is recommended to build a Linux version under Ubuntu 16.04. Try the steps bel
 
 2. Make and install Berkeley DB by manually.
 
-3. Start Qt Creater and open "securechain-wallet.pro", then make proper configurations. Be sure that it is a release build.
+3. Start Qt Creator and open "securechain-wallet.pro", then make proper configurations. Be sure that it is a release build.
 
 4. Use the "Build"/"Build All" menu option to start the build.
 
 5. When the build is finished, there will be a new "securechain-wallet" file under the "build-securechain-wallet-Desktop-Release" folder. The new file can run on the same Linux platform.
 
 
-**Mac(static)**
+**Mac (static)**
 
-The build steps for Mac are similar to those on Linux. Note that due to the new [System Integrity Protection](https://support.apple.com/en-us/HT204899) feature from EI Capitan, the "/usr" and "/usr/local" folders may be readonly even with root privilege. Therefore it is recommended to install the depencencies into "/opt/local" folder. Some libraries can also be installed automatically by MacPort(https://www.macports.org/).
+The build steps for Mac are similar to those on Linux. Note that due to the new [System Integrity Protection](https://support.apple.com/en-us/HT204899) feature from EI Capitan, the "/usr" and "/usr/local" folders may be read-only even with root privilege. Therefore it is recommended to install the dependencies into "/opt/local" folder. Some libraries can also be installed automatically by [MacPort](https://www.macports.org/).
 
 Note that the build for Mac will be static, therefore the dependencies should also be static including Qt. To make a static build of Qt libraries, please refer to http://doc.qt.io/qt-5/osx-deployment.html
 
 To deploy the software, please add "RELEASE=1" as an additional argument to qmake in build setting.
 
 
-### SecureCoin Daemon(Not fully tested)
+### SecureCoin Daemon (Not fully tested)
 
 **Linux**
 
