@@ -48,7 +48,7 @@ git clone https://github.com/securechain/securechain-wallet.git
 
 ### Securechain Wallet GUI
 
-Windows(static):
+**Windows(static)**
 
 To build a Windows version, it is recommended to setup a MXE environment(http://mxe.cc/) under Ubuntu Linux 16.04. Try the steps below with reference to "https://bitcointalk.org/index.php?topic=1080289.0":
 
@@ -100,7 +100,7 @@ Note that the current version of miniupnpc from MXE is working for Securechain W
 8. When the build is finished, there will be a new "securechain-wallet.exe" file under the "release" folder. The new file can run on Windows.
 
 
-Linux(non-static):
+**Linux(non-static)**
 
 It is recommended to build a Linux version under Ubuntu 16.04. Try the steps below:
 
@@ -115,7 +115,7 @@ It is recommended to build a Linux version under Ubuntu 16.04. Try the steps bel
 5. When the build is finished, there will be a new "securechain-wallet" file under the "build-securechain-wallet-Desktop-Release" folder. The new file can run on the same Linux platform.
 
 
-Mac(static):
+**Mac(static)**
 
 The build steps for Mac are similar to those on Linux. Note that due to the new [System Integrity Protection](https://support.apple.com/en-us/HT204899) feature from EI Capitan, the "/usr" and "/usr/local" folders may be readonly even with root privilege. Therefore it is recommended to install the depencencies into "/opt/local" folder. Some libraries can also be installed automatically by MacPort(https://www.macports.org/).
 
@@ -126,7 +126,7 @@ To deploy the software, please add "RELEASE=1" as an additional argument to qmak
 
 ### SecureCoin Daemon(Not fully tested)
 
-Linux:
+**Linux**
 
 It is recommended to build a Linux version under Ubuntu 16.04. Try the steps below:
 
@@ -140,7 +140,7 @@ make -f makefile.unix
 
 3. When the build is finished, there will be a new "securecoind" file under the same folder. The new file can run on the same Linux platform.
 
-Mac:
+**Mac**
 
 The build steps for Mac are similar to those on Linux. The only change is to use the osx makefile as below:
 
