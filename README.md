@@ -89,15 +89,15 @@ Note that the current version of miniupnpc from MXE works fine for Securechain W
 ./compile-db.sh
 ```
 
-6. Go to securechain-wallet folder, open "compile-src.sh" and update the "MXE_PATH" environment variable.
+7. Go to securechain-wallet folder, open "compile-src.sh" and update the "MXE_PATH" environment variable.
 
-7. In the same terminal go to the "securechain-wallet" folder, then run the following command:
+8. In the same terminal go to the "securechain-wallet" folder, then run the following command:
 
 ```
 ./comiple-src.sh
 ```
 
-8. When the build is finished, there will be a new "securechain-wallet.exe" file under the "release" folder. The new file can run on Windows.
+9. When the build is finished, there will be a new "securechain-wallet.exe" file under the "release" folder. The new file can run on Windows.
 
 
 **Linux (non-static)**
