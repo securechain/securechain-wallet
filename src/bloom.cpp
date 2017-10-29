@@ -1,4 +1,5 @@
 // Copyright (c) 2012 The Bitcoin developers
+// Copyright (c) 2015-2017 The Securechain developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include <math.h>
@@ -23,6 +24,8 @@ vData(min((unsigned int)(-1  / LN2SQUARED * nElements * log(nFPRate)), MAX_BLOOM
 // The ideal number of hash functions is filter size * ln(2) / number of elements
 // Again, we ignore filter parameters which will create a bloom filter with more hash functions than the protocol limits
 // See http://en.wikipedia.org/wiki/Bloom_filter for an explanation of these formulas
+isFull(false),
+isEmpty(false),
 nHashFuncs(min((unsigned int)(vData.size() * 8 / nElements * LN2), MAX_HASH_FUNCS)),
 nTweak(nTweakIn),
 nFlags(nFlagsIn)
@@ -37,7 +40,7 @@ inline unsigned int CBloomFilter::Hash(unsigned int nHashNum, const std::vector<
 
 void CBloomFilter::insert(const vector<unsigned char>& vKey)
 {
-    if (vData.size() == 1 && vData[0] == 0xff)
+    if (isFull)
         return;
     for (unsigned int i = 0; i < nHashFuncs; i++)
     {
@@ -45,6 +48,7 @@ void CBloomFilter::insert(const vector<unsigned char>& vKey)
         // Sets bit nIndex of vData
         vData[nIndex >> 3] |= bit_mask[7 & nIndex];
     }
+    isEmpty = false;
 }
 
 void CBloomFilter::insert(const COutPoint& outpoint)
@@ -63,8 +67,10 @@ void CBloomFilter::insert(const uint256& hash)
 
 bool CBloomFilter::contains(const vector<unsigned char>& vKey) const
 {
-    if (vData.size() == 1 && vData[0] == 0xff)
+    if (isFull)
         return true;
+    if (isEmpty)
+    	return false;
     for (unsigned int i = 0; i < nHashFuncs; i++)
     {
         unsigned int nIndex = Hash(i, vKey);
@@ -99,9 +105,10 @@ bool CBloomFilter::IsRelevantAndUpdate(const CTransaction& tx, const uint256& ha
     bool fFound = false;
     // Match if the filter contains the hash of tx
     //  for finding tx when they appear in a block
-    if (contains(hash))
-        fFound = true;
-
+    if (ifFull)
+        return true;
+    if (isEmpty)
+    	return false;
     for (unsigned int i = 0; i < tx.vout.size(); i++)
     {
         const CTxOut& txout = tx.vout[i];
@@ -157,4 +164,17 @@ bool CBloomFilter::IsRelevantAndUpdate(const CTransaction& tx, const uint256& ha
     }
 
     return false;
+}
+
+void CBllomFilter::UpdateEmptyFull()
+{
+	bool full = true;
+	bool empty = true;
+	for (unsigned int i = 0; i < vData.size(); i++)
+	{
+		full &= vData[i] == 0xff;
+		empty &= vData[i] == 0;
+	}
+	isFull = full;
+	isEmpty = empty;
 }
