@@ -1,4 +1,4 @@
-Securechain Wallet 0.9.2
+Securechain Wallet 0.10.0
 ====================
 
 Copyright (c) 2009-2013 Bitcoin Developers
