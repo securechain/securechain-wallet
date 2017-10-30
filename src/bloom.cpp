@@ -105,7 +105,7 @@ bool CBloomFilter::IsRelevantAndUpdate(const CTransaction& tx, const uint256& ha
     bool fFound = false;
     // Match if the filter contains the hash of tx
     //  for finding tx when they appear in a block
-    if (ifFull)
+    if (isFull)
         return true;
     if (isEmpty)
     	return false;
@@ -166,7 +166,7 @@ bool CBloomFilter::IsRelevantAndUpdate(const CTransaction& tx, const uint256& ha
     return false;
 }
 
-void CBllomFilter::UpdateEmptyFull()
+void CBloomFilter::UpdateEmptyFull()
 {
 	bool full = true;
 	bool empty = true;
