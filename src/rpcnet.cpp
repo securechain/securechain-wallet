@@ -1,4 +1,5 @@
 // Copyright (c) 2009-2012 Bitcoin Developers
+// Copyright (c) 2015-2017 The Securechain developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -55,7 +56,10 @@ Value getpeerinfo(const Array& params, bool fHelp)
         obj.push_back(Pair("bytesrecv", (boost::int64_t)stats.nRecvBytes));
         obj.push_back(Pair("conntime", (boost::int64_t)stats.nTimeConnected));
         obj.push_back(Pair("version", stats.nVersion));
-        obj.push_back(Pair("subver", stats.strSubVer));
+        // Use the sanitized form of subver here, to avoid tricksy remote peers from
+        // corrupting or modifiying the JSON output by putting special characters in
+        // their ver message.
+        obj.push_back(Pair("subver", stats.cleanSubVer));
         obj.push_back(Pair("inbound", stats.fInbound));
         obj.push_back(Pair("startingheight", stats.nStartingHeight));
         obj.push_back(Pair("banscore", stats.nMisbehavior));

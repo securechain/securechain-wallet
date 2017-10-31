@@ -1,4 +1,5 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
+// Copyright (c) 2015-2017 The Securechain developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -328,7 +329,10 @@ bool CKey::SignCompact(uint256 hash, std::vector<unsigned char>& vchSig)
         }
 
         if (nRecId == -1)
+        {
+        	ECDSA_SIG_free(sig);
             throw key_error("CKey::SignCompact() : unable to construct recoverable key");
+        }
 
         vchSig[0] = nRecId+27+(fCompressedPubKey ? 4 : 0);
         BN_bn2bin(sig->r,&vchSig[33-(nBitsR+7)/8]);
@@ -367,6 +371,7 @@ bool CKey::SetCompactSignature(uint256 hash, const std::vector<unsigned char>& v
         ECDSA_SIG_free(sig);
         return true;
     }
+    ECDSA_SIG_free(sig);
     return false;
 }
 
