@@ -1,6 +1,8 @@
 Securechain Wallet 0.9.2
 ====================
 
+[![Join the chat at https://gitter.im/Securechain/Lobby](https://badges.gitter.im/Securechain/Lobby.svg)](https://gitter.im/Securechain/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Copyright (c) 2009-2013 Bitcoin Developers
 Copyright (c) 2013-2014 SecureCoin Developers
 Copyright (c) 2015-2017 Securechain Developers
