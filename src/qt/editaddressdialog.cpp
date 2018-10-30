@@ -1,3 +1,8 @@
+// Copyright (c) 2011-2013 The Bitcoin developers
+// Copyright (c) 2015-2018 The Securechain developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #include "editaddressdialog.h"
 #include "ui_editaddressdialog.h"
 
@@ -9,21 +14,20 @@
 
 EditAddressDialog::EditAddressDialog(Mode mode, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::EditAddressDialog), mapper(0), mode(mode), model(0)
+    ui(new Ui::EditAddressDialog),
+    mapper(0),
+    mode(mode),
+    model(0)
 {
     ui->setupUi(this);
 
     GUIUtil::setupAddressWidget(ui->addressEdit, this);
 
-    ui->labelAddressNum->setVisible(false);
-    ui->comboAddressNum->setVisible(false);
     switch(mode)
     {
     case NewReceivingAddress:
         setWindowTitle(tr("New receiving address"));
         ui->addressEdit->setEnabled(false);
-        ui->labelAddressNum->setVisible(true);
-        ui->comboAddressNum->setVisible(true);
         break;
     case NewSendingAddress:
         setWindowTitle(tr("New sending address"));
@@ -64,51 +68,27 @@ void EditAddressDialog::loadRow(int row)
 
 bool EditAddressDialog::saveCurrentRow()
 {
-    bool flag;
-    int num;
-
     if(!model)
         return false;
 
-    num = 1;
-    flag = false;
     switch(mode)
     {
     case NewReceivingAddress:
-        num = ui->comboAddressNum->currentText().toInt();
     case NewSendingAddress:
-        if (num <= 0 || num > MAX_NEW_ADDRESS_NUM)
-        {
-            address.clear();
-            QMessageBox::critical(this, "Error", "Invalid number of new addresses.", QMessageBox::Ok,
-                                  QMessageBox::Ok);
-            break;
-        }
-
-        flag = true;
-        for(;num > 0; num--)
-        {
-            address = model->addRow(
-                    mode == NewSendingAddress ? AddressTableModel::Send : AddressTableModel::Receive,
-                    ui->labelEdit->text(),
-                    ui->addressEdit->text());
-            if (address.isEmpty())
-            {
-                flag = false;
-                break;
-            }
-        }
+        address = model->addRow(
+                mode == NewSendingAddress ? AddressTableModel::Send : AddressTableModel::Receive,
+                ui->labelEdit->text(),
+                ui->addressEdit->text());
         break;
     case EditReceivingAddress:
     case EditSendingAddress:
         if(mapper->submit())
         {
             address = ui->addressEdit->text();
-            flag = (address.isEmpty() ? false : true);
         }
         break;
     }
-    return flag;
+    return !address.isEmpty();
 }
 
 void EditAddressDialog::accept()
@@ -128,7 +108,7 @@ void EditAddressDialog::accept()
             break;
         case AddressTableModel::INVALID_ADDRESS:
             QMessageBox::warning(this, windowTitle(),
-                tr("The entered address \"%1\" is not a valid Securecoin address.").arg(ui->addressEdit->text()),
+                tr("The entered address \"%1\" is not a valid SecureCoin address.").arg(ui->addressEdit->text()),
                 QMessageBox::Ok, QMessageBox::Ok);
             break;
         case AddressTableModel::DUPLICATE_ADDRESS:

@@ -1,3 +1,8 @@
+// Copyright (c) 2011-2013 The Bitcoin developers
+// Copyright (c) 2015-2018 The Securechain developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #ifndef TRANSACTIONDESCDIALOG_H
 #define TRANSACTIONDESCDIALOG_H
 

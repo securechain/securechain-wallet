@@ -1,3 +1,8 @@
+// Copyright (c) 2011-2013 The Bitcoin developers
+// Copyright (c) 2015-2018 The Securechain developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #include "bitcoinunits.h"
 
 #include <QStringList>
@@ -60,6 +65,17 @@ qint64 BitcoinUnits::factor(int unit)
     case cSRC: return 1000;
     case mSRC: return 100;
     default:   return 100000;
+    }
+}
+
+qint64 BitcoinUnits::maxAmount(int unit)
+{
+    switch(unit)
+    {
+    case SRC:  return Q_INT64_C(21000000);
+    case cSRC: return Q_INT64_C(2100000000);
+    case mSRC: return Q_INT64_C(21000000000);
+    default:   return 0;
     }
 }
 

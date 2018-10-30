@@ -1,26 +1,35 @@
+// Copyright (c) 2011-2014 The Bitcoin developers
+// Copyright (c) 2015-2018 The Securechain developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #include "splashscreen.h"
+
 #include "clientversion.h"
+#include "ui_interface.h"
 #include "util.h"
 
-#include <QPainter>
 #include <QApplication>
+#include <QPainter>
 
-SplashScreen::SplashScreen(const QPixmap &pixmap, Qt::WindowFlags f) :
+SplashScreen::SplashScreen(const QPixmap &pixmap, Qt::WindowFlags f, bool isTestNet) :
     QSplashScreen(pixmap, f)
 {
+    setAutoFillBackground(true);
+
     // set reference point, paddings
     int paddingRight            = 50;
     int paddingTop              = 50;
     int titleVersionVSpace      = 17;
-    int titleCopyrightVSpace    = 35;
+    int titleCopyrightVSpace    = 40;
 
     float fontFactor            = 1.0;
 
     // define text to place
-    QString titleText       = QString(QApplication::applicationName()).replace(QString("-testnet"), QString(""), Qt::CaseSensitive); // cut of testnet, place it as single object further down
+    QString titleText       = tr("Securechain Wallet");
     QString versionText     = QString("Version %1").arg(QString::fromStdString(FormatFullVersion()));
     QString copyrightText   = QChar(0xA9)+QString(" 2009-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Bitcoin developers"));
-    QString copyrightText2  = QChar(0xA9)+QString(" 2013 ") + QString(tr("The Securecoin developers"));
+    QString copyrightText2  = QChar(0xA9)+QString(" 2013-2014 ") + QString(tr("The Securecoin developers"));
     QString copyrightText3  = QChar(0xA9)+QString(" 2015-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Securechain developers"));
     QString testnetAddText  = QString(tr("[testnet]")); // define text to place as single text object
 
@@ -28,7 +37,7 @@ SplashScreen::SplashScreen(const QPixmap &pixmap, Qt::WindowFlags f) :
 
     // load the bitmap for writing some text over it
     QPixmap newPixmap;
-    if(GetBoolArg("-testnet")) {
+    if(isTestNet) {
         newPixmap     = QPixmap(":/images/splash_testnet");
     }
     else {
@@ -69,9 +78,8 @@ SplashScreen::SplashScreen(const QPixmap &pixmap, Qt::WindowFlags f) :
     pixPaint.drawText(newPixmap.width()-titleTextWidth-paddingRight,paddingTop+titleCopyrightVSpace+12,copyrightText2);
     pixPaint.drawText(newPixmap.width()-titleTextWidth-paddingRight,paddingTop+titleCopyrightVSpace+24,copyrightText3);
 
-    // draw testnet string if -testnet is on
-    if(QApplication::applicationName().contains(QString("-testnet"))) {
-        // draw copyright stuff
+    // draw testnet string if testnet is on
+    if(isTestNet) {
         QFont boldFont = QFont(font, 10*fontFactor);
         boldFont.setWeight(QFont::Bold);
         pixPaint.setFont(boldFont);
@@ -83,4 +91,37 @@ SplashScreen::SplashScreen(const QPixmap &pixmap, Qt::WindowFlags f) :
     pixPaint.end();
 
     this->setPixmap(newPixmap);
+
+    subscribeToCoreSignals();
+}
+
+SplashScreen::~SplashScreen()
+{
+    unsubscribeFromCoreSignals();
+}
+
+void SplashScreen::slotFinish(QWidget *mainWin)
+{
+    finish(mainWin);
+}
+
+static void InitMessage(SplashScreen *splash, const std::string &message)
+{
+    QMetaObject::invokeMethod(splash, "showMessage",
+        Qt::QueuedConnection,
+        Q_ARG(QString, QString::fromStdString(message)),
+        Q_ARG(int, Qt::AlignBottom|Qt::AlignHCenter),
+        Q_ARG(QColor, QColor(55,55,55)));
+}
+
+void SplashScreen::subscribeToCoreSignals()
+{
+    // Connect signals to client
+    uiInterface.InitMessage.connect(boost::bind(InitMessage, this, _1));
+}
+
+void SplashScreen::unsubscribeFromCoreSignals()
+{
+    // Disconnect signals from client
+    uiInterface.InitMessage.disconnect(boost::bind(InitMessage, this, _1));
 }

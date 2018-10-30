@@ -1,13 +1,14 @@
 // Copyright (c) 2012 The Bitcoin developers
-// Copyright (c) 2015-2017 The Securechain developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#include <math.h>
-#include <stdlib.h>
 
 #include "bloom.h"
-#include "main.h"
+
+#include "core.h"
 #include "script.h"
+
+#include <math.h>
+#include <stdlib.h>
 
 #define LN2SQUARED 0.4804530139182014246671025263266649717305529515945455
 #define LN2 0.6931471805599453094172321214581765680755001343602552
@@ -70,7 +71,7 @@ bool CBloomFilter::contains(const vector<unsigned char>& vKey) const
     if (isFull)
         return true;
     if (isEmpty)
-    	return false;
+        return false;
     for (unsigned int i = 0; i < nHashFuncs; i++)
     {
         unsigned int nIndex = Hash(i, vKey);
@@ -108,7 +109,10 @@ bool CBloomFilter::IsRelevantAndUpdate(const CTransaction& tx, const uint256& ha
     if (isFull)
         return true;
     if (isEmpty)
-    	return false;
+        return false;
+    if (contains(hash))
+        fFound = true;
+
     for (unsigned int i = 0; i < tx.vout.size(); i++)
     {
         const CTxOut& txout = tx.vout[i];
@@ -168,13 +172,13 @@ bool CBloomFilter::IsRelevantAndUpdate(const CTransaction& tx, const uint256& ha
 
 void CBloomFilter::UpdateEmptyFull()
 {
-	bool full = true;
-	bool empty = true;
-	for (unsigned int i = 0; i < vData.size(); i++)
-	{
-		full &= vData[i] == 0xff;
-		empty &= vData[i] == 0;
-	}
-	isFull = full;
-	isEmpty = empty;
+    bool full = true;
+    bool empty = true;
+    for (unsigned int i = 0; i < vData.size(); i++)
+    {
+        full &= vData[i] == 0xff;
+        empty &= vData[i] == 0;
+    }
+    isFull = full;
+    isEmpty = empty;
 }
