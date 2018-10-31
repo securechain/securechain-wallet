@@ -16,6 +16,7 @@
 #include "optionsmodel.h"
 #include "splashscreen.h"
 #include "utilitydialog.h"
+#include "winshutdownmonitor.h"
 #ifdef ENABLE_WALLET
 #include "paymentserver.h"
 #include "walletmodel.h"
@@ -26,7 +27,9 @@
 #include "rpcserver.h"
 #include "ui_interface.h"
 #include "util.h"
+#ifdef ENABLE_WALLET
 #include "wallet.h"
+#endif
 
 #include <stdint.h>
 
@@ -187,6 +190,9 @@ public:
 
     /// Get process return value
     int getReturnValue() { return returnValue; }
+
+    /// Get window identifier of QMainWindow (Securechain Wallet GUI)
+    WId getMainWinId() const;
 
 public slots:
     void initializeResult(int retval);
@@ -443,9 +449,19 @@ void BitcoinApplication::handleRunawayException(const QString &message)
     ::exit(1);
 }
 
+WId BitcoinApplication::getMainWinId() const
+{
+    if (!window)
+        return 0;
+
+    return window->winId();
+}
+
 #ifndef BITCOIN_QT_TEST
 int main(int argc, char *argv[])
 {
+    SetupEnvironment();
+
     /// 1. Parse command-line options. These take precedence over anything else.
     // Command-line options take precedence:
     ParseParameters(argc, argv);
@@ -506,7 +522,13 @@ int main(int argc, char *argv[])
                               QObject::tr("Error: Specified data directory \"%1\" does not exist.").arg(QString::fromStdString(mapArgs["-datadir"])));
         return 1;
     }
-    ReadConfigFile(mapArgs, mapMultiArgs);
+    try {
+        ReadConfigFile(mapArgs, mapMultiArgs);
+    } catch(std::exception &e) {
+        QMessageBox::critical(0, QObject::tr("Securechain Wallet"),
+                              QObject::tr("Error: Cannot parse configuration file: %1. Only use key=value syntax.").arg(e.what()));
+        return false;
+    }
 
     /// 7. Determine network (and switch to network specific options)
     // - Do not call Params() before this step
@@ -551,10 +573,15 @@ int main(int argc, char *argv[])
     /// 9. Main GUI initialization
     // Install global event filter that makes sure that long tooltips can be word-wrapped
     app.installEventFilter(new GUIUtil::ToolTipToRichTextFilter(TOOLTIP_WRAP_THRESHOLD, &app));
-    // Install qDebug() message handler to route to debug.log
 #if QT_VERSION < 0x050000
+    // Install qDebug() message handler to route to debug.log
     qInstallMsgHandler(DebugMessageHandler);
 #else
+#if defined(Q_OS_WIN)
+    // Install global event filter for processing Windows session related Windows messages (WM_QUERYENDSESSION and WM_ENDSESSION)
+    qApp->installNativeEventFilter(new WinShutdownMonitor());
+#endif
+    // Install qDebug() message handler to route to debug.log
     qInstallMessageHandler(DebugMessageHandler);
 #endif
     // Load GUI settings from QSettings
@@ -570,6 +597,9 @@ int main(int argc, char *argv[])
     {
         app.createWindow(isaTestNet);
         app.requestInitialize();
+#if defined(Q_OS_WIN) && QT_VERSION >= 0x050000
+        WinShutdownMonitor::registerShutdownBlockReason(QObject::tr("Securechain Wallet didn't yet exit safely..."), (HWND)app.getMainWinId());
+#endif
         app.exec();
         app.requestShutdown();
         app.exec();

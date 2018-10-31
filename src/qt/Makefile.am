@@ -7,8 +7,8 @@ AM_CPPFLAGS += -I$(top_srcdir)/src \
   $(QR_CFLAGS)
 bin_PROGRAMS = securechain-wallet
 noinst_LIBRARIES = libbitcoinqt.a
-SUBDIRS = $(BUILD_TEST_QT)
-DIST_SUBDIRS = test
+SUBDIRS = . $(BUILD_TEST_QT)
+DIST_SUBDIRS = . test
 
 # bitcoin qt core #
 QT_TS = \
@@ -25,7 +25,6 @@ QT_TS = \
   locale/bitcoin_cs.ts \
   locale/bitcoin_cy.ts \
   locale/bitcoin_da.ts \
-  locale/bitcoin_de_AT.ts \
   locale/bitcoin_de.ts \
   locale/bitcoin_el_GR.ts \
   locale/bitcoin_en.ts \
@@ -58,6 +57,7 @@ QT_TS = \
   locale/bitcoin_la.ts \
   locale/bitcoin_lt.ts \
   locale/bitcoin_lv_LV.ts \
+  locale/bitcoin_mn.ts \
   locale/bitcoin_ms_MY.ts \
   locale/bitcoin_nb.ts \
   locale/bitcoin_nl.ts \
@@ -212,7 +212,8 @@ BITCOIN_QT_H = \
   walletframe.h \
   walletmodel.h \
   walletmodeltransaction.h \
-  walletview.h
+  walletview.h \
+  winshutdownmonitor.h
 
 RES_ICONS = \
   res/icons/add.png \
@@ -276,10 +277,10 @@ BITCOIN_QT_CPP = \
   qvalidatedlineedit.cpp \
   qvaluecombobox.cpp \
   rpcconsole.cpp \
-  signverifymessagedialog.cpp \
   splashscreen.cpp \
   trafficgraphwidget.cpp \
-  utilitydialog.cpp
+  utilitydialog.cpp \
+  winshutdownmonitor.cpp
 
 if ENABLE_WALLET
 BITCOIN_QT_CPP += \
@@ -298,6 +299,7 @@ BITCOIN_QT_CPP += \
   recentrequeststablemodel.cpp \
   sendcoinsdialog.cpp \
   sendcoinsentry.cpp \
+  signverifymessagedialog.cpp \
   transactiondesc.cpp \
   transactiondescdialog.cpp \
   transactionfilterproxy.cpp \
@@ -371,7 +373,7 @@ translate: bitcoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(BITCOIN_QT_CPP) $(
 $(QT_QRC_CPP): $(QT_QRC) $(QT_QM) $(QT_FORMS_H) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES) $(PROTOBUF_H)
 	@cd $(abs_srcdir); test -f $(RCC) && QT_SELECT=$(QT_SELECT) $(RCC) -name bitcoin -o $(abs_builddir)/$@ $< || \
 	  echo error: could not build $@
-	$(SED) -i.bak -e '/^\*\*.*Created:/d' $@ && rm $@.bak
-	$(SED) -i.bak -e '/^\*\*.*by:/d' $@ && rm $@.bak
+	$(SED) -e '/^\*\*.*Created:/d' $@ > $@.n && mv $@{.n,}
+	$(SED) -e '/^\*\*.*by:/d' $@  > $@.n && mv $@{.n,}
 
 CLEANFILES = $(BUILT_SOURCES) $(QT_QM) $(QT_FORMS_H) *.gcda *.gcno

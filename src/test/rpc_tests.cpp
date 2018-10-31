@@ -1,3 +1,8 @@
+// Copyright (c) 2012-2013 The Bitcoin Core developers
+// Copyright (c) 2015-2018 The Securechain developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #include "rpcserver.h"
 #include "rpcclient.h"
 
@@ -105,14 +110,14 @@ BOOST_AUTO_TEST_CASE(rpc_rawsign)
 
 BOOST_AUTO_TEST_CASE(rpc_format_monetary_values)
 {
-    BOOST_CHECK(write_string(ValueFromAmount(0LL), false) == "0.00000000");
-    BOOST_CHECK(write_string(ValueFromAmount(1LL), false) == "0.00001000");
-    BOOST_CHECK(write_string(ValueFromAmount(17622LL), false) == "0.17622000");
-    BOOST_CHECK(write_string(ValueFromAmount(50000LL), false) == "0.50000000");
-    BOOST_CHECK(write_string(ValueFromAmount(89898LL), false) == "0.89898000");
-    BOOST_CHECK(write_string(ValueFromAmount(100000LL), false) == "1.00000000");
-    BOOST_CHECK(write_string(ValueFromAmount(2099999999990LL), false) == "20999999.99990000");
-    BOOST_CHECK(write_string(ValueFromAmount(2099999999999LL), false) == "20999999.99999000");
+    BOOST_CHECK(write_string(ValueFromAmount(0LL), false) == "0.00000");
+    BOOST_CHECK(write_string(ValueFromAmount(1LL), false) == "0.00001");
+    BOOST_CHECK(write_string(ValueFromAmount(17622LL), false) == "0.17622");
+    BOOST_CHECK(write_string(ValueFromAmount(50000LL), false) == "0.50000");
+    BOOST_CHECK(write_string(ValueFromAmount(89898LL), false) == "0.89898");
+    BOOST_CHECK(write_string(ValueFromAmount(100000LL), false) == "1.00000");
+    BOOST_CHECK(write_string(ValueFromAmount(2099999999990LL), false) == "20999999.99990");
+    BOOST_CHECK(write_string(ValueFromAmount(2099999999999LL), false) == "20999999.99999");
 }
 
 static Value ValueFromString(const std::string &str)
@@ -124,14 +129,14 @@ static Value ValueFromString(const std::string &str)
 
 BOOST_AUTO_TEST_CASE(rpc_parse_monetary_values)
 {
-    BOOST_CHECK(AmountFromValue(ValueFromString("0.00001000")) == 1LL);
-    BOOST_CHECK(AmountFromValue(ValueFromString("0.17622000")) == 17622LL);
+    BOOST_CHECK(AmountFromValue(ValueFromString("0.00001")) == 1LL);
+    BOOST_CHECK(AmountFromValue(ValueFromString("0.17622")) == 17622LL);
     BOOST_CHECK(AmountFromValue(ValueFromString("0.5")) == 50000LL);
-    BOOST_CHECK(AmountFromValue(ValueFromString("0.50000000")) == 50000LL);
-    BOOST_CHECK(AmountFromValue(ValueFromString("0.89898000")) == 89898LL);
-    BOOST_CHECK(AmountFromValue(ValueFromString("1.00000000")) == 100000LL);
-    BOOST_CHECK(AmountFromValue(ValueFromString("20999999.99990000")) == 2099999999990LL);
-    BOOST_CHECK(AmountFromValue(ValueFromString("20999999.99999000")) == 2099999999999LL);
+    BOOST_CHECK(AmountFromValue(ValueFromString("0.50000")) == 50000LL);
+    BOOST_CHECK(AmountFromValue(ValueFromString("0.89898")) == 89898LL);
+    BOOST_CHECK(AmountFromValue(ValueFromString("1.00000")) == 100000LL);
+    BOOST_CHECK(AmountFromValue(ValueFromString("20999999.99990")) == 2099999999990LL);
+    BOOST_CHECK(AmountFromValue(ValueFromString("20999999.99999")) == 2099999999999LL);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

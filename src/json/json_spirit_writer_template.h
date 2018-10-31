@@ -126,10 +126,8 @@ namespace json_spirit
                 case bool_type:  output( value.get_bool() );  break;
                 case int_type:   output_int( value );         break;
 
-                /// SecureCoin: Added std::fixed and changed precision from 16 to 8
-                // TODO: shall we reduce the precision to 5 due to the precision change
-                //       of COIN?
-                case real_type:  os_ << std::showpoint << std::fixed << std::setprecision(8)
+                /// SecureCoin: Added std::fixed and changed precision from 16 to 5
+                case real_type:  os_ << std::showpoint << std::fixed << std::setprecision(5)
                                      << value.get_real();     break;
 
                 case null_type:  os_ << "null";               break;

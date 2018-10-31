@@ -21,7 +21,7 @@ Securechain Wallet Release Notes
 - The unit test case of "rpc_rawsign" for rpc_tests should be added in the
   future.
 - Some special tx cases can be added to "tx_valid.json" in the future,
-  expecially for P2SH transactions.
+  especially for P2SH transactions.
 - Fixed bug in FormatMoney, which is mainly used for debug logging feature.
 
   

@@ -32,25 +32,20 @@ turned off by default.  See the configure options for upnp behavior desired:
 	--disable-upnp-default   (the default) UPnP support turned off by default at runtime
 	--enable-upnp-default    UPnP support turned on by default at runtime
 
-IPv6 support may be disabled by setting:
-
-	--disable-ipv6           Disable IPv6 support
-
 Licenses of statically linked libraries:
  Berkeley DB   New BSD license with additional requirement that linked
                software must be free open source
  Boost         MIT-like license
  miniupnpc     New (3-clause) BSD license
 
-- Versions used in this release:
--  GCC           4.3.3
--  OpenSSL       1.0.1c
--  Berkeley DB   4.8.30.NC
--  Boost         1.55
--  miniupnpc     1.6
--  qt            4.8.3
--  protobuf      2.5.0
--  libqrencode   3.2.0
+- For the versions used in the release, see doc/release-process.md under *Fetch and build inputs*.
+
+System requirements
+--------------------
+
+C++ compilers are memory-hungry. It is recommended to have at least 1 GB of
+memory available when compiling Securechain Wallet. With 512MB of memory or less
+compilation will take much longer due to swap thrashing.
 
 Dependency Build Instructions: Ubuntu & Debian
 ----------------------------------------------
@@ -89,7 +84,6 @@ for other Ubuntu & Debian:
 
 	sudo apt-get install libdb4.8-dev
 	sudo apt-get install libdb4.8++-dev
-	sudo apt-get install libboost1.55-all-dev
 
 Optional:
 
@@ -105,15 +99,15 @@ To build without GUI pass `--without-gui`.
 
 To build with Qt 4 you need the following:
 
-    apt-get install libqt4-dev libprotobuf-dev protobuf-compiler
+    sudo apt-get install libqt4-dev libprotobuf-dev protobuf-compiler
 
 For Qt 5 you need the following:
 
-    apt-get install libqt5gui5 libqt5core5 libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev
+    sudo apt-get install libqt5gui5 libqt5core5 libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev
 
 libqrencode (optional) can be installed with:
 
-    apt-get install libqrencode-dev
+    sudo apt-get install libqrencode-dev
 
 Once these are installed, they will be found by configure and a securechain-wallet executable will be
 built by default.
@@ -135,16 +129,40 @@ miniupnpc
 
 Berkeley DB
 -----------
-You need Berkeley DB 4.8.  If you have to build Berkeley DB yourself:
+It is recommended to use Berkeley DB 4.8. If you have to build it yourself:
 
-	cd build_unix/
-	../dist/configure --enable-cxx
-	make
-	sudo make install
-	sudo ln -s /usr/local/BerkeleyDB.4.8 /usr/local/db4.8
-	sudo ln -s /usr/local/db4.8/include/* /usr/include
-	sudo ln -s /usr/local/db4.8/lib/* /usr/lib
+```bash
+SECURECHAIN_WALLET_ROOT=$(pwd)
 
+# Pick some path to install BDB to, here we create a directory within the securechain wallet directory
+BDB_PREFIX="${SECURECHAIN_WALLET_ROOT}/db4"
+mkdir -p $BDB_PREFIX
+
+# Fetch the source and verify that it is not tampered with
+wget 'http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz'
+echo '12edc0df75bf9abd7f82f821795bcee50f42cb2e5f76a6a281b85732798364ef  db-4.8.30.NC.tar.gz' | sha256sum -c
+# -> db-4.8.30.NC.tar.gz: OK
+tar -xzvf db-4.8.30.NC.tar.gz
+
+# Build the library and install to our prefix
+cd db-4.8.30.NC/build_unix/
+#  Note: Do a static build so that it can be embedded into the exectuable, instead of having to find a .so at runtime
+../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
+make install
+
+# Configure Securechain Wallet to use our own-built instance of BDB
+cd $SECURECHAIN_WALLET_ROOT
+./configure (other args...) LDFLAGS="-L${BDB_PREFIX}/lib/" CPPFLAGS="-I${BDB_PREFIX}/include/"
+```
+
+Alternatively to make a global build and installation:
+
+cd build_unix/
+../dist/configure --enable-cxx --disable-shared --with-pic --prefix=/usr/local
+make
+sudo make install
+
+**Note**: You only need Berkeley DB if the wallet is enabled (see the section *Disable-Wallet mode* below).
 
 Boost
 -----

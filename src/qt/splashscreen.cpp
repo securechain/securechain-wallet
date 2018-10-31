@@ -6,8 +6,12 @@
 #include "splashscreen.h"
 
 #include "clientversion.h"
+#include "init.h"
 #include "ui_interface.h"
 #include "util.h"
+#ifdef ENABLE_WALLET
+#include "wallet.h"
+#endif
 
 #include <QApplication>
 #include <QPainter>
@@ -28,7 +32,7 @@ SplashScreen::SplashScreen(const QPixmap &pixmap, Qt::WindowFlags f, bool isTest
     // define text to place
     QString titleText       = tr("Securechain Wallet");
     QString versionText     = QString("Version %1").arg(QString::fromStdString(FormatFullVersion()));
-    QString copyrightText   = QChar(0xA9)+QString(" 2009-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Bitcoin developers"));
+    QString copyrightText   = QChar(0xA9)+QString(" 2009-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Bitcoin Core developers"));
     QString copyrightText2  = QChar(0xA9)+QString(" 2013-2014 ") + QString(tr("The Securecoin developers"));
     QString copyrightText3  = QChar(0xA9)+QString(" 2015-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Securechain developers"));
     QString testnetAddText  = QString(tr("[testnet]")); // define text to place as single text object

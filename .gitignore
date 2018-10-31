@@ -39,6 +39,7 @@ src/qt/test/moc*.cpp
 *.rej
 *.orig
 *.o
+*.o-*
 *.P
 src/securecoind
 src/obj/build.h

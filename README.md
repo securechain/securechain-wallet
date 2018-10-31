@@ -1,7 +1,7 @@
 Securechain Wallet 0.10.0
 ====================
 
-Copyright (c) 2009-2013 Bitcoin Developers
+Copyright (c) 2009-2014 Bitcoin Developers
 Copyright (c) 2013-2014 SecureCoin Developers
 Copyright (c) 2015-2018 Securechain Developers
 
@@ -23,15 +23,23 @@ with each other, with the help of a P2P network to check for double-spending. It
 
 Build
 ---------------------
-This is an internal test version, which has only been tested on Ubuntu 12.04 without guarantee of its functionality.
+This is an internal test version, which has only been tested on Ubuntu 14.04 without guarantee of its functionality.
 The build details can be found under [Unix Build Notes](doc/build-unix.md).
+
+
+Development tips and tricks
+---------------------------
+**compiling for debugging**
+
+Run configure with the --enable-debug option, then make. Or run configure with
+CXXFLAGS="-g -ggdb -O0" or whatever debug flags you need.
 
 
 Developers
 ---------------------
 The main developer of SecureCoin core wallet is baritus.
 
-The main developer of Securechain Wallet is Haimin Zhang(contact@securechain.com) and Baritus.
+The main developer of Securechain Wallet is Haimin Zhang ([contact@securechain.com](mailto:contact@securechain.com)) and Baritus.
 
 
 Other Pages
@@ -40,8 +48,8 @@ Other Pages
 - [OSX Build Notes](build-osx.md)
 - [Windows Build Notes](build-msw.md)
 - [Coding Guidelines](coding.md)
-- [Release Process](release-process.md)
-- [Release Notes](release-notes.md)
+- [Release Process](doc/release-process.md)
+- [Release Notes](doc/release-notes.md)
 - [Multiwallet Qt Development](multiwallet-qt.md)
 - [Unit Tests](unit-tests.md)
 - [Translation Process](translation_process.md)
