@@ -157,7 +157,7 @@ Developers
 ---------------------
 The main developer of SecureCoin core wallet is baritus.
 
-The main developer of Securechain Wallet is Haimin Zhang(contact@securechain.info) and Baritus.
+The main developer of Securechain Wallet is Haimin Zhang ([contact@securechain.com](mailto:contact@securechain.com)) and Baritus.
 
 
 Other Pages
