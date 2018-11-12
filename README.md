@@ -25,6 +25,7 @@ Build
 ---------------------
 This is an internal test version, which has only been tested on Ubuntu 14.04 without guarantee of its functionality.
 The build details can be found under [Unix Build Notes](doc/build-unix.md).
+Note that the versions of dependencies are just for reference.
 
 
 Development tips and tricks

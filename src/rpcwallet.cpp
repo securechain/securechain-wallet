@@ -319,7 +319,7 @@ Value sendtoaddress(const Array& params, bool fHelp)
                 "                             to which you're sending the transaction. This is not part of the \n"
                 "                             transaction, just kept in your wallet.\n"
                 "\nResult:\n"
-                "\"transactionid\"  (string) The transaction id. (view at https://securechain.info/en/tx/[transactionid])\n"
+                "\"transactionid\"  (string) The transaction id.\n"
                 "\nExamples:\n"
                 + HelpExampleCli("sendtoaddress", "\"1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd\" 0.1")
                 + HelpExampleCli("sendtoaddress", "\"1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd\" 0.1 \"donation\" \"seans outpost\"")
@@ -748,7 +748,7 @@ Value sendfrom(const Array& params, bool fHelp)
             "                                     to which you're sending the transaction. This is not part of the transaction, \n"
             "                                     it is just kept in your wallet.\n"
             "\nResult:\n"
-            "\"transactionid\"        (string) The transaction id. (view at https://securechain.info/en/tx/[transactionid])\n"
+            "\"transactionid\"        (string) The transaction id.\n"
             "\nExamples:\n"
             "\nSend 0.01 src from the default account to the address, must have at least 1 confirmation\n"
             + HelpExampleCli("sendfrom", "\"\" \"1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd\" 0.01") +
@@ -872,7 +872,7 @@ Value sendmany(const Array& params, bool fHelp)
 }
 
 // Defined in rpcmisc.cpp
-extern CScript _createmultisig(const Array& params);
+extern CScript _createmultisig_redeemScript(const Array& params);
 
 Value addmultisigaddress(const Array& params, bool fHelp)
 {
@@ -909,7 +909,7 @@ Value addmultisigaddress(const Array& params, bool fHelp)
         strAccount = AccountFromValue(params[2]);
 
     // Construct using pay-to-script-hash:
-    CScript inner = _createmultisig(params);
+    CScript inner = _createmultisig_redeemScript(params);
     CScriptID innerID = inner.GetID();
     pwalletMain->AddCScript(inner);
 
@@ -1871,7 +1871,7 @@ Value settxfee(const Array& params, bool fHelp)
             "settxfee amount\n"
             "\nSet the transaction fee per kB.\n"
             "\nArguments:\n"
-            "1. amount         (numeric, required) The transaction fee in SRC/kB rounded to the nearest 0.00000001\n"
+            "1. amount         (numeric, required) The transaction fee in SRC/kB rounded to the nearest 0.00001\n"
             "\nResult\n"
             "true|false        (boolean) Returns true if successful\n"
             "\nExamples:\n"

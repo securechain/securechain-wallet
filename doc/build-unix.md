@@ -14,15 +14,15 @@ This will build securechain-wallet as well if the dependencies are met.
 Dependencies
 ---------------------
 
- Library     | Purpose          | Description
- ------------|------------------|----------------------
- libssl      | SSL Support      | Secure communications
- libdb4.8    | Berkeley DB      | Wallet storage
- libboost    | Boost            | C++ Library
- miniupnpc   | UPnP Support     | Optional firewall-jumping support
- qt          | GUI              | GUI toolkit
- protobuf    | Payments in GUI  | Data interchange format used for payment protocol
- libqrencode | QR codes in GUI  | Optional for generating QR codes
+ Library     | Version        | Purpose          | Description
+ ------------|----------------|------------------|--------------------------------------------------
+ libssl      | 1.0.1k         | SSL Support      | Secure communications
+ libdb4.8    | 4.8.30.NC      | Berkeley DB      | Wallet storage
+ libboost    | 1.55.0         | Boost            | C++ Library
+ miniupnpc   | 1.9.20140701   | UPnP Support     | Optional firewall-jumping support
+ qt          | 4.6.4          | GUI              | GUI toolkit
+ protobuf    | 2.5.0          | Payments in GUI  | Data interchange format used for payment protocol
+ libqrencode | 3.4.3          | QR codes in GUI  | Optional for generating QR codes
 
 [miniupnpc](http://miniupnp.free.fr/) may be used for UPnP port mapping.  It can be downloaded from [here](
 http://miniupnp.tuxfamily.org/files/).  UPnP support is compiled in and
@@ -37,8 +37,6 @@ Licenses of statically linked libraries:
                software must be free open source
  Boost         MIT-like license
  miniupnpc     New (3-clause) BSD license
-
-- For the versions used in the release, see doc/release-process.md under *Fetch and build inputs*.
 
 System requirements
 --------------------

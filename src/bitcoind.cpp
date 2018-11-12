@@ -89,9 +89,9 @@ bool AppInit(int argc, char* argv[])
             // First part of help message is specific to bitcoind / RPC client
             std::string strUsage = _("SecureCoin Daemon") + " " + _("version") + " " + FormatFullVersion() + "\n\n" +
                 _("Usage:") + "\n" +
-                  "  securecoind [options]                     " + _("Start SecureCoin server") + "\n" +
+                  "  securecoind [options]                     " + _("Start SecureCoin Daemon") + "\n" +
                 _("Usage (deprecated, use securecoin-cli):") + "\n" +
-                  "  securecoind [options] <command> [params]  " + _("Send command to SecureCoin server") + "\n" +
+                  "  securecoind [options] <command> [params]  " + _("Send command to SecureCoin daemon") + "\n" +
                   "  securecoind [options] help                " + _("List commands") + "\n" +
                   "  securecoind [options] help <command>      " + _("Get help for a command") + "\n";
 

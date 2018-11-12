@@ -540,7 +540,7 @@ void StartRPCThreads()
 
     if (fUseSSL)
     {
-        rpc_ssl_context->set_options(ssl::context::no_sslv2);
+        rpc_ssl_context->set_options(ssl::context::no_sslv2 | ssl::context::no_sslv3);
 
         filesystem::path pathCertFile(GetArg("-rpcsslcertificatechainfile", "server.cert"));
         if (!pathCertFile.is_complete()) pathCertFile = filesystem::path(GetDataDir()) / pathCertFile;
@@ -567,7 +567,6 @@ void StartRPCThreads()
     try
     {
         boost::shared_ptr<ip::tcp::acceptor> acceptor(new ip::tcp::acceptor(*rpc_io_service));
-        rpc_acceptors.push_back(acceptor);
         acceptor->open(endpoint.protocol());
         acceptor->set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 
@@ -579,6 +578,7 @@ void StartRPCThreads()
 
         RPCListen(acceptor, *rpc_ssl_context, fUseSSL);
 
+        rpc_acceptors.push_back(acceptor);
         fListening = true;
     }
     catch(boost::system::system_error &e)
@@ -593,7 +593,6 @@ void StartRPCThreads()
             endpoint.address(bindAddress);
 
             boost::shared_ptr<ip::tcp::acceptor> acceptor(new ip::tcp::acceptor(*rpc_io_service));
-            rpc_acceptors.push_back(acceptor);
             acceptor->open(endpoint.protocol());
             acceptor->set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
             acceptor->bind(endpoint);
@@ -601,6 +600,7 @@ void StartRPCThreads()
 
             RPCListen(acceptor, *rpc_ssl_context, fUseSSL);
 
+            rpc_acceptors.push_back(acceptor);
             fListening = true;
         }
     }
@@ -640,11 +640,20 @@ void StopRPCThreads()
     // First, cancel all timers and acceptors
     // This is not done automatically by ->stop(), and in some cases the destructor of
     // asio::io_service can hang if this is skipped.
+    boost::system::error_code ec;
     BOOST_FOREACH(const boost::shared_ptr<ip::tcp::acceptor> &acceptor, rpc_acceptors)
-        acceptor->cancel();
+    {
+        acceptor->cancel(ec);
+        if (ec)
+            LogPrintf("%s: Warning: %s when cancelling acceptor", __func__, ec.message());
+    }
     rpc_acceptors.clear();
     BOOST_FOREACH(const PAIRTYPE(std::string, boost::shared_ptr<deadline_timer>) &timer, deadlineTimers)
-        timer.second->cancel();
+    {
+        timer.second->cancel(ec);
+        if (ec)
+            LogPrintf("%s: Warning: %s when cancelling timer", __func__, ec.message());
+    }
     deadlineTimers.clear();
 
     rpc_io_service->stop();

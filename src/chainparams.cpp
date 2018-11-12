@@ -126,7 +126,7 @@ public:
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
-        txNew.vin[0].scriptSig = CScript() << 486604799 << CBigNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
+        txNew.vin[0].scriptSig = CScript() << 486604799 << CScriptNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
         txNew.vout[0].nValue = 1 * COIN;
         txNew.vout[0].scriptPubKey = CScript() << ParseHex("04e565ca385918acee9899b048250de59e6638f1e0dcd484b033a318901c30f4e85dc324f7e9b0344145b29ca8f2906c397c0d33078d653df70a92e3b16fb2c447") << OP_CHECKSIG;
         genesis.vtx.push_back(txNew);
